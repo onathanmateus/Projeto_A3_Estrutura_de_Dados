@@ -28,7 +28,7 @@ public class LogisticaPortuaria {
 
     // alocar containers nos armazéns
     List<List<Integer>> armazens = alocarVolumes(containers, capacidadeArmazem);
-    System.out.println("\n Conteúdo dos armazéns:");
+    System.out.println("\nConteúdo dos armazéns:");
     for (int i = 0; i < armazens.size(); i++) {
       List<Integer> bin = armazens.get(i); 
       // bin representa um armazém, com os volumes dos containers dentro dele
@@ -38,21 +38,12 @@ public class LogisticaPortuaria {
     }
     System.out.println("Número de armazéns necessários: " + armazens.size());
 
-    // converter cada armazém em um volume total para alocar nos caminhões
-    List<Integer> volumesArmazens = new ArrayList<>();
-    for (List<Integer> bin : armazens) {
-      // para cada armazém, somamos os volumes dos containers armazenados nele
-      int soma = bin.stream().mapToInt(Integer::intValue).sum();
-      volumesArmazens.add(soma); 
-      // essa soma representa a carga que precisará ser transportada por um caminhão
-    }
-
-    // alocar volumes dos armazéns nos caminhões
-    List<List<Integer>> caminhoes = alocarVolumes(volumesArmazens, capacidadeCaminhao);
-    System.out.println("\n Conteúdo dos caminhões:");
+    // alocar diretamente os containers nos caminhões
+    List<List<Integer>> caminhoes = alocarVolumes(containers, capacidadeCaminhao);
+    System.out.println("\nConteúdo dos caminhões:");
     for (int i = 0; i < caminhoes.size(); i++) {
       List<Integer> bin = caminhoes.get(i); 
-      // bin representa um caminhão, com os volumes dos armazéns que ele está transportando
+      // bin representa um caminhão, com os volumes dos containers que ele está transportando
       int soma = bin.stream().mapToInt(Integer::intValue).sum(); 
       // calcula o total de carga transportada por este caminhão
       System.out.println("Caminhão " + (i + 1) + ": " + bin + " (Total: " + soma + ")");
@@ -69,7 +60,7 @@ public class LogisticaPortuaria {
     Collections.sort(ordenados, Collections.reverseOrder());
 
     // cada bin será representado como uma lista de inteiros
-    // se um bin contém [8, 2], isso significa que ele armazena volumes 8 e 2
+    // por exemplo, se um bin contém [8, 2], isso significa que ele armazena volumes 8 e 2
     List<List<Integer>> bins = new ArrayList<>();
 
     // percorre cada volume e tenta alocar em um bin já existente
@@ -82,7 +73,7 @@ public class LogisticaPortuaria {
 
         // se ainda couber o novo volume neste bin, aloca ele aqui
         if (soma + volume <= capacidade) {
-          bin.add(volume);
+          bin.add(volume); 
           // adiciona o volume ao bin existente
           alocado = true;
           break; 
